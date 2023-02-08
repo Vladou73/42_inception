@@ -1,0 +1,13 @@
+# L'argument version permet de spécifier à Docker Compose quelle version on souhaite utiliser
+# et donc d'utiliser ou pas certaines versions
+version: '3'
+
+# L'ensemble des conteneurs qui doivent être créés doivent être définis sous l'argument services
+# Chaque conteneur commence avec un nom qui lui est propre
+services:
+  db:
+    image: mysql:5.7
+
+
+# l’argument image qui nous permet de définir l'image Docker que nous souhaitons utiliser.
+# Nous aurions pu aussi utiliser l’argument build en lui spécifiant le chemin vers notre fichier Dockerfile ; ainsi, lors de l’exécution de Docker Compose, il aurait construit le conteneur via le Dockerfile avant de l’exécuter.
