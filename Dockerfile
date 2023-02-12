@@ -1,5 +1,6 @@
 # FROM : l'image que vous allez utiliser comme base pour la creation de notre image
-FROM debian:9
+# Debian 11 "bullseye est la dernière version stable en cours (au 02/2023)"
+FROM debian:bullseye
 
 # Ensuite, utilisez l'instruction RUN pour exécuter une commande dans votre conteneur.
 # Limitez au maximum le nombre d'instructions RUN, afin de limiter le nombre de layers créées, et donc de réduire la taille de notre image Docker.
@@ -15,6 +16,8 @@ ADD . /app/
 WORKDIR /app
 
 # L'instruction EXPOSE permet d'indiquer le port sur lequel votre application écoute.
+# EXPOSE ne rend pas les ports du conteneur accessibles à l'hôte, il expose le port spécifié et le rend disponible uniquement pour la communication entre conteneurs
+# Note : Pour que le serveur WordPress puisse communiquer avec le conteneur MariaDB, il est important que les deux conteneurs soient exécutés dans le même réseau docker.
 EXPOSE 2368
 
 # L'instruction VOLUME permet d'indiquer quel répertoire vous voulez partager avec votre host.

@@ -5,8 +5,8 @@ FROM debian:bullseye
 # Ensuite, utilisez l'instruction RUN pour exécuter une commande dans votre conteneur.
 # Limitez au maximum le nombre d'instructions RUN, afin de limiter le nombre de layers créées, et donc de réduire la taille de notre image Docker.
 RUN apt update -yq \
-&& apt install nginx -y \
-&& echo nginx -v
+&& apt upgrade -y \
+&& apt install nginx -y
 
 # installation TLS / SSL
 # 1) get openssl pkg
@@ -20,6 +20,8 @@ RUN apt install openssl -y \
     -keyout /etc/nginx/ssl/nginx-selfsigned.key \
     -subj "/C=FR/L=Paris/O=42School/CN=vnafissi.42.fr/" \
 && apt-get clean -y 
+
+RUN chmod 755 /etc/nginx/ssl
 
 # l'instruction ADD afin de copier ou de télécharger des fichiers dans l'image.
 # Dans notre cas, nous l'utilisons pour ajouter les sources de notre application locale dans le dossier /app/ de l'image.

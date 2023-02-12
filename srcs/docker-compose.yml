@@ -43,3 +43,4 @@ services:
 
 
 # Networks :  We haven’t defined any custom network, so it should create one for you.
+# See container_name argument for naming the container
