@@ -15,15 +15,24 @@
 #
 # If you are new to MariaDB, check out https://mariadb.com/kb/en/basic-mariadb-articles/
 
+# Server Option Groups
+
 #
 # This group is read both by the client and the server
 # use it for options that affect everything
-#
+# Options read by all MariaDB client programs and the MariaDB Server. This is useful for options like socket and port, which is common between the server and the clients.
 [client-server]
 # Port or socket location where to connect
-# port = 3306
-socket = /run/mysqld/mysqld.sock
+port = 3306 #est-ce qu'on a besoin de ça ?
+socket = /run/mysqld/mysqld.sock #chemin par défaut du socket pour communiquer
 
-# Import all .cnf files from configuration directory
-!includedir /etc/mysql/conf.d/
-!includedir /etc/mysql/mariadb.conf.d/
+
+[mysqld] # Options read by mysqld, which includes both MariaDB Server and MySQL Server.
+datadir=/var/lib/mysql #préciser notre dossier qui stockera notre base de données
+user=mysql #add user ?????
+
+#bind_address=* # toutes les IP du réseau peuvent se connecter (bind_address=XXX.XXX.XX.XX)
+bind-address = 0.0.0.0
+
+port = 3306
+socket = /run/mysqld/mysqld.sock #chemin par défaut du socket pour communiquer

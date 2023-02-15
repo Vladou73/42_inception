@@ -1,6 +1,5 @@
 # FROM : l'image que vous allez utiliser comme base pour la creation de notre image
-# Debian 11 "bullseye est la dernière version stable en cours (au 02/2023)"
-FROM debian:bullseye
+FROM debian:buster
 
 # Ensuite, utilisez l'instruction RUN pour exécuter une commande dans votre conteneur.
 # Limitez au maximum le nombre d'instructions RUN, afin de limiter le nombre de layers créées, et donc de réduire la taille de notre image Docker.
