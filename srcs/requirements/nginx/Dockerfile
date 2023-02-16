@@ -12,15 +12,16 @@ RUN apt update -yq \
 # 2) .
 # 3) generate key and certificate files
 #clear apt pkg list
-RUN apt install openssl -y \
-&& mkdir -p /etc/nginx/ssl \
-&& openssl req -x509 -nodes \
-    -out /etc/nginx/ssl/nginx-selfsigned.crt \
-    -keyout /etc/nginx/ssl/nginx-selfsigned.key \
-    -subj "/C=FR/L=Paris/O=42School/CN=vnafissi.42.fr/" \
-&& apt-get clean -y 
+# RUN apt install openssl -y \
+# && mkdir -p /etc/nginx/ssl \
+# && openssl req -x509 -nodes \
+#     -out /etc/nginx/ssl/nginx-selfsigned.crt \
+#     -keyout /etc/nginx/ssl/nginx-selfsigned.key \
+#     -subj "/C=FR/L=Paris/O=42School/CN=vnafissi.42.fr/" 
+#     \
+# && apt-get clean -y 
 
-RUN chmod 755 /etc/nginx/ssl
+# RUN chmod 755 /etc/nginx/ssl
 
 # l'instruction ADD afin de copier ou de télécharger des fichiers dans l'image.
 # Dans notre cas, nous l'utilisons pour ajouter les sources de notre application locale dans le dossier /app/ de l'image.
@@ -30,8 +31,8 @@ RUN chmod 755 /etc/nginx/ssl
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 #modification des droits pour avoir accès au root principal et à l'utilisateur principal)
-RUN chmod 755 /var/www/html \
-&& chown -R www-data:www-data /var/www/html 
+# RUN chmod 755 /var/www/html \
+# && chown -R www-data:www-data /var/www/html 
 
 # WORKDIR permet de modifier le répertoire courant, commande équivalente à cd
 # L'ensemble des commandes qui suivront seront toutes exécutées depuis le répertoire défini.
@@ -46,7 +47,7 @@ EXPOSE 443
 # VOLUME /app/logs
 
 #CMD doit toujours etre present. exécute une commande lors du demarrage du conteneur.
-CMD [ "nginx", "-g", "daemon off;" ]
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
 
 
