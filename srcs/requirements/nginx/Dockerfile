@@ -12,20 +12,15 @@ RUN apt update -yq \
 # 2) .
 # 3) generate key and certificate files
 #clear apt pkg list
-# RUN apt install openssl -y \
-# && mkdir -p /etc/nginx/ssl \
-# && openssl req -x509 -nodes \
-#     -out /etc/nginx/ssl/nginx-selfsigned.crt \
-#     -keyout /etc/nginx/ssl/nginx-selfsigned.key \
-#     -subj "/C=FR/L=Paris/O=42School/CN=vnafissi.42.fr/" 
-#     \
-# && apt-get clean -y 
+RUN apt install openssl -y \
+&& mkdir -p /etc/nginx/ssl \
+&& openssl req -x509 -nodes \
+    -out /etc/nginx/ssl/nginx-selfsigned.crt \
+    -keyout /etc/nginx/ssl/nginx-selfsigned.key \
+    -subj "/C=FR/L=Paris/O=42School/CN=vnafissi.42.fr/" \
+&& apt-get clean -y 
 
-# RUN chmod 755 /etc/nginx/ssl
-
-# l'instruction ADD afin de copier ou de télécharger des fichiers dans l'image.
-# Dans notre cas, nous l'utilisons pour ajouter les sources de notre application locale dans le dossier /app/ de l'image.
-# ADD . /app/
+RUN chmod 755 /etc/nginx/ssl
 
 # Copy conf file in the container created. it replaces the default existing nginx conf file
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
@@ -48,14 +43,3 @@ EXPOSE 443
 
 #CMD doit toujours etre present. exécute une commande lors du demarrage du conteneur.
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
-
-
-
-
-#FROM qui vous permet de définir l'image source ;
-#RUN qui vous permet d’exécuter des commandes dans votre conteneur ;
-#ADD qui vous permet d'ajouter des fichiers dans votre conteneur ;
-#WORKDIR qui vous permet de définir votre répertoire de travail ;
-#EXPOSE qui permet de définir les ports d'écoute par défaut ;
-#VOLUME qui permet de définir les volumes utilisables ;
-#CMD qui permet de définir la commande par défaut lors de l’exécution de vos conteneurs Docker.
