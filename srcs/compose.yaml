@@ -5,6 +5,7 @@ version: '3.7'
 # L'ensemble des conteneurs qui doivent être créés doivent être définis sous l'argument services
 services:
   nginx: # projet name 
+    hostname: nginx_host
     container_name: nginx #is a string that specifies a custom container name, rather than a generated default name.
     build: # specifies the build configuration for creating container image from source
       context: ./requirements/nginx
@@ -14,11 +15,16 @@ services:
     - inception-network
     ports: # Exposes container ports
     - "443:443" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
-
+    # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
+    # db_data est un volume créé par Docker directement, qui permet d'écrire les données sur le disque hôte sans spécifier l'emplacement exact. On peut aussi faire un /data/mysql:/var/lib/mysql qui serait aussi fonctionnel.
+    # Le volume nominatif "- traefik_ssl:/letsencrypt" vs volume anonyme "- /letsencrypt"
+    volumes:
+      - type: bind
+        source: db_data:/home/vnafissi/data/wordpress_db
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
-
-
+volumes:
+  db_data:
 
 # depends_on: #expresses startup and shutdown dependencies between services.
     # depends_on:
@@ -43,11 +49,6 @@ services:
 #     # image :  définir l'image Docker que nous souhaitons utiliser.
 #     # equivalent a "build en lui spécifiant le chemin vers notre fichier Dockerfile" ; ainsi, lors de l’exécution de Docker Compose, il aurait construit le conteneur via le Dockerfile avant de l’exécuter.
 #     image: mysql:5.7
-#     # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
-#     # db_data est un volume créé par Docker directement, qui permet d'écrire les données sur le disque hôte sans spécifier l'emplacement exact. On peut aussi faire un /data/mysql:/var/lib/mysql qui serait aussi fonctionnel.
-#     # Le volume nominatif "- traefik_ssl:/letsencrypt" vs volume anonyme "- /letsencrypt"
-#     volumes:
-#       - db_data:/var/lib/mysql
 #     # Un conteneur étant par définition monoprocessus, s'il rencontre une erreur fatale, il peut être amené à s'arrêter. Si le serveur MySQL s'arrête il redémarrera automatiquement avec l'argument "restart: always"
 #     restart: always
 #     # Définissez les variables d'environnement
