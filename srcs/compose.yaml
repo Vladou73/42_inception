@@ -1,0 +1,85 @@
+# L'argument version permet de spécifier à Docker Compose quelle version on souhaite utiliser
+# et donc d'utiliser ou pas certaines versions
+version: '3.7'
+
+# L'ensemble des conteneurs qui doivent être créés doivent être définis sous l'argument services
+services:
+  nginx: # projet name 
+    container_name: nginx #is a string that specifies a custom container name, rather than a generated default name.
+    build: # specifies the build configuration for creating container image from source
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+    - inception-network
+    ports: # Exposes container ports
+    - "443:443" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
+
+
+# volumes defines mount host paths or named volumes that MUST be accessible by service containers.
+
+
+
+# depends_on: #expresses startup and shutdown dependencies between services.
+    # depends_on:
+    #   - db
+    #   - redis
+
+# domainname declares a custom domain name to use for the service container.
+# MUST be a valid RFC 1123 hostname.
+
+# env_file adds environment variables to the container based on file content.
+
+#environment defines environment variables set in the container. 
+#environment can use either an array or a map. 
+# environment:
+#   - RACK_ENV=development
+#   - SHOW=true
+#   - USER_INPUT
+
+
+# hostname declares a custom host name to use for the service container. MUST be a valid RFC 1123 hostname.
+
+#     # image :  définir l'image Docker que nous souhaitons utiliser.
+#     # equivalent a "build en lui spécifiant le chemin vers notre fichier Dockerfile" ; ainsi, lors de l’exécution de Docker Compose, il aurait construit le conteneur via le Dockerfile avant de l’exécuter.
+#     image: mysql:5.7
+#     # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
+#     # db_data est un volume créé par Docker directement, qui permet d'écrire les données sur le disque hôte sans spécifier l'emplacement exact. On peut aussi faire un /data/mysql:/var/lib/mysql qui serait aussi fonctionnel.
+#     # Le volume nominatif "- traefik_ssl:/letsencrypt" vs volume anonyme "- /letsencrypt"
+#     volumes:
+#       - db_data:/var/lib/mysql
+#     # Un conteneur étant par définition monoprocessus, s'il rencontre une erreur fatale, il peut être amené à s'arrêter. Si le serveur MySQL s'arrête il redémarrera automatiquement avec l'argument "restart: always"
+#     restart: always
+#     # Définissez les variables d'environnement
+#     environment:
+#       MYSQL_ROOT_PASSWORD: somewordpress
+#       MYSQL_DATABASE: wordpress
+#       MYSQL_USER: wordpress
+#       MYSQL_PASSWORD: wordpress
+
+#   # Dans le second service, nous créons un conteneur qui contiendra le nécessaire pour faire fonctionner votre site avec WordPress
+#   wordpress:
+#     # creation d'une dependance entre 2 conteneurs ==> Docker va demarrer le service db AVANT le service wordpress
+#     depends_on:
+#       - db
+#     image: wordpress
+#     # ports : indique a Docker Compose qu on veut exposer un port de notre machine hote vers notre conteneur
+#     # et ainsi le rendre accessible depuis l'exterieur
+#     ports:
+#       - "8000:80"
+#     restart: always
+#     environment:
+#       WORDPRESS_DB_HOST: db:3306
+#       WORDPRESS_DB_USER: wordpress
+#       WORDPRESS_DB_PASSWORD: wordpress
+#       WORDPRESS_DB_NAME: wordpress
+
+
+# # Networks :  We haven’t defined any custom network, so it should create one for you.
+# # See container_name argument for naming the container
+
+# networks defines the networks that service containers are attached to, referencing entries under the top-level networks key.
+networks:
+  inception-network:
+
+  
