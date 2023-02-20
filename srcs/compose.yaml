@@ -11,23 +11,20 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     restart: always
-    # networks:
-    # - inception-network
+    networks:
+    - inception-network
     ports: # Exposes container ports
     - "443:443" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
     # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
+    # db_data est un volume créé par Docker directement, qui permet d'écrire les données sur le disque hôte sans spécifier l'emplacement exact. On peut aussi faire un /data/mysql:/var/lib/mysql qui serait aussi fonctionnel.
+    # Le volume nominatif "- traefik_ssl:/letsencrypt" vs volume anonyme "- /letsencrypt"
     volumes:
-      - type: bind # bind mount
-      # website_files est un volume créé par Docker directement, qui permet d'écrire les données sur le disque hôte sans spécifier l'emplacement exact. On peut aussi faire un /data/mysql:/var/lib/mysql qui serait aussi fonctionnel.
-      # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur
-        source: ${DATA_FOLDER}/wordpress_files #For bind mounts, this is the path to the file or directory on the Docker daemon host.
-        target: /www/html/ #equivalent destination. takes as its value the path where the file or directory is mounted in the container
+      - type: bind
+        source: db_data:/home/vnafissi/data/wordpress_db
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
 volumes:
-  wordpress_files:
-# /home/login/data
-# /home/vnafissi/data/wordpress_files
+  db_data:
 
 # depends_on: #expresses startup and shutdown dependencies between services.
     # depends_on:
@@ -83,7 +80,7 @@ volumes:
 # # See container_name argument for naming the container
 
 # networks defines the networks that service containers are attached to, referencing entries under the top-level networks key.
-# networks:
-#   inception-network:
+networks:
+  inception-network:
 
   
