@@ -39,20 +39,3 @@ volumes:
 # separated from the rest of the host network stack.
 networks:
   mynetwork:
-
-
-Volumes et bind mounts
-Differences between volumes and bind mounts
-- Volumes are stored in a part of the host filesystem which is managed by Docker (/var/lib/docker/volumes/ on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.
-- Bind mounts may be stored anywhere on the host system. They may even be important system files or directories. Non-Docker processes on the Docker host or a Docker container can modify them at any time.
-When you create a volume or bind mount, it is stored within a directory on the Docker host. 
-A given volume can be mounted into multiple containers simultaneously. When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using docker volume prune.
-
-your volumes will be available in the /home/login/data folder of the host machine using Docker.
-==> on doit choisir un bind mount et pas un volume ?
-
-doc pour les volumes et bind mounts
-Compose : 
-- https://docs.docker.com/compose/compose-file/#volumes-top-level-element
-- https://docs.docker.com/compose/compose-file/#volumes
-Bind mounts : https://docs.docker.com/storage/bind-mounts/
