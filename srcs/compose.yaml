@@ -17,17 +17,17 @@ services:
     - "443:443" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
     # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
     volumes:
-      - type: bind # bind mount
-      # website_files est un volume créé par Docker directement, qui permet d'écrire les données sur le disque hôte sans spécifier l'emplacement exact. On peut aussi faire un /data/mysql:/var/lib/mysql qui serait aussi fonctionnel.
       # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur
-        source: ${DATA_FOLDER}/wordpress_files #For bind mounts, this is the path to the file or directory on the Docker daemon host.
-        target: /www/html/ #equivalent destination. takes as its value the path where the file or directory is mounted in the container
+      - wordpress_files:/var/www/html
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
 volumes:
   wordpress_files:
-# /home/login/data
-# /home/vnafissi/data/wordpress_files
+     driver: local # The built-in local driver on Linux accepts options similar to the linux mount command. 
+     driver_opts:
+       type: none
+       o: bind # bind mount pour pouvoir spécifier le chemin où le volume est monté (ci-dessous)
+       device: ${DATA_FOLDER}/wordpress_files
 
 # depends_on: #expresses startup and shutdown dependencies between services.
     # depends_on:
