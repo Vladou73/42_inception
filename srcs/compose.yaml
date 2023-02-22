@@ -19,6 +19,15 @@ services:
     volumes:
       # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur
       - wordpress_files:/var/www/html
+  mariadb:
+    hostname: mariadb_host
+    container_name: mariadb #is a string that specifies a custom container name, rather than a generated default name.
+    build: # specifies the build configuration for creating container image from source
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    restart: always
+    ports: # Exposes container ports
+    - "3306:3306" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
 volumes:

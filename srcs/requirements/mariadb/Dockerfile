@@ -15,7 +15,6 @@ RUN     chmod 755 /etc/mysql/database.sh
 # Note : Pour que le serveur WordPress puisse communiquer avec le conteneur MariaDB, il est important que les deux conteneurs soient exécutés dans le même réseau docker.
 EXPOSE  3306
 
-#CMD doit toujours etre present. exécute une commande lors du demarrage du conteneur.
 CMD     [ "/bin/bash", "/etc/mysql/database.sh" ]
 # CMD     [ "/etc/init.d/mysql" ,"start" ]
 
