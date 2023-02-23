@@ -11,8 +11,8 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     restart: always
-    # networks:
-    # - inception-network
+    networks:
+    - inception-network
     ports: # Exposes container ports
     - "443:443" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
     # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
@@ -26,8 +26,15 @@ services:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     restart: always
+    networks:
+      - inception-network
     ports: # Exposes container ports
-    - "3306:3306" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
+      - "3306:3306" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
+    environment:
+      # - MYSQL_ROOT_PASSWORD: somewordpress
+      - DATABASE_NAME:${DATABASE_NAME} 
+      # - MYSQL_USER: wordpress
+      # - MYSQL_PASSWORD: wordpress
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
 volumes:
@@ -92,7 +99,7 @@ volumes:
 # # See container_name argument for naming the container
 
 # networks defines the networks that service containers are attached to, referencing entries under the top-level networks key.
-# networks:
-#   inception-network:
+networks:
+  inception-network:
 
   
