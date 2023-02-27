@@ -31,10 +31,10 @@ services:
     ports: # Exposes container ports
       - "3306:3306" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
     environment:
-      # - MYSQL_ROOT_PASSWORD: somewordpress
-      - DATABASE_NAME:${DATABASE_NAME} 
-      # - MYSQL_USER: wordpress
-      # - MYSQL_PASSWORD: wordpress
+      - DB_NAME=${DB_NAME}
+      - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - DB_USER_USERNAME=${DB_USER_USERNAME}
+      - DB_USER_PASSWORD=${DB_USER_PASSWORD}
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
 volumes:

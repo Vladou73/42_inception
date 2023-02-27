@@ -8,9 +8,12 @@ RUN     apt update -yq \
         && apt install mariadb-client -y
 
 COPY    ./conf/mariadb.cnf  /etc/mysql/mariadb.conf.d/mariadb.cnf
-COPY    ./database.sh       /etc/mysql/database.sh
+COPY    ./tools/database.sh       /etc/mysql/database.sh
 
-ENV DATABASE_NAME=db_test
+# ENV     DB=db_test
+# ENV     DB_USER_USERNAME=user_test
+# ENV     DB_USER_PASSWORD=user_password
+# ENV     DB_ROOT_PASSWORD=root_password
 
 RUN     chmod 744 /etc/mysql/database.sh
 
