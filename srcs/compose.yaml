@@ -16,8 +16,7 @@ services:
     ports: # Exposes container ports
     - "443:443" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
     # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
-    volumes:
-      # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur
+    volumes: # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur
       - wordpress_files:/var/www/html
   mariadb:
     hostname: mariadb_host
@@ -30,6 +29,8 @@ services:
       - inception-network
     ports: # Exposes container ports
       - "3306:3306" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
+    volumes: # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur. /var/lib/mysql configuré dans conf file
+      - wordpress_database:/var/lib/mysql
     environment:
       - DB_NAME=${DB_NAME}
       - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
@@ -44,6 +45,13 @@ volumes:
        type: none
        o: bind # bind mount pour pouvoir spécifier le chemin où le volume est monté (ci-dessous)
        device: ${DATA_FOLDER}/wordpress_files
+  wordpress_database:
+     driver: local # The built-in local driver on Linux accepts options similar to the linux mount command. 
+     driver_opts:
+       type: none
+       o: bind # bind mount pour pouvoir spécifier le chemin où le volume est monté (ci-dessous)
+       device: ${DATA_FOLDER}/wordpress_database
+
 
 # depends_on: #expresses startup and shutdown dependencies between services.
     # depends_on:

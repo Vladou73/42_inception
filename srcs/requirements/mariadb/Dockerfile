@@ -10,20 +10,11 @@ RUN     apt update -yq \
 COPY    ./conf/mariadb.cnf  /etc/mysql/mariadb.conf.d/mariadb.cnf
 COPY    ./tools/database.sh       /etc/mysql/database.sh
 
-# ENV     DB=db_test
-# ENV     DB_USER_USERNAME=user_test
-# ENV     DB_USER_PASSWORD=user_password
-# ENV     DB_ROOT_PASSWORD=root_password
-
 RUN     chmod 744 /etc/mysql/database.sh
-
-
 
 # Note : Pour que le serveur WordPress puisse communiquer avec le conteneur MariaDB, il est important que les deux conteneurs soient exécutés dans le même réseau docker.
 EXPOSE  3306
 
 CMD     [ "/bin/bash", "/etc/mysql/database.sh" ]
 # CMD     [ "/etc/init.d/mysql" ,"start" ]
-
-
 # CMD ["mysqld" "--print-defaults"]
