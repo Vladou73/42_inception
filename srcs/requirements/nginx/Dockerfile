@@ -38,5 +38,5 @@ EXPOSE 443
 # L'instruction VOLUME permet d'indiquer quel répertoire vous voulez partager avec votre host.
 # VOLUME /app/logs
 
-#CMD doit toujours etre present. exécute une commande lors du demarrage du conteneur.
+#CMD ou ENTRYPOINT doit toujours etre present. exécute une commande lors du demarrage du conteneur.
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
