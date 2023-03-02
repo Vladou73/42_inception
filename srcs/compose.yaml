@@ -7,6 +7,9 @@ services:
   nginx: # projet name 
     hostname: nginx_host
     container_name: nginx #is a string that specifies a custom container name, rather than a generated default name.
+    # creation d'une dependance entre 2 conteneurs ==> Docker va demarrer le service db AVANT le service wordpress
+    depends_on:
+      - mariadb
     build: # specifies the build configuration for creating container image from source
       context: ./requirements/nginx
       dockerfile: Dockerfile
@@ -20,22 +23,33 @@ services:
       - wordpress_files:/var/www/html
   mariadb:
     hostname: mariadb_host
-    container_name: mariadb #is a string that specifies a custom container name, rather than a generated default name.
-    build: # specifies the build configuration for creating container image from source
+    container_name: mariadb
+    build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     restart: always
     networks:
       - inception-network
-    ports: # Exposes container ports
-      - "3306:3306" #HOST:CONTAINER SHOULD always be specified as a (quoted) string.
-    volumes: # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur. /var/lib/mysql configuré dans conf file
+    ports:
+      - "3306:3306"
+    volumes: #/var/lib/mysql configuré dans conf file
       - wordpress_database:/var/lib/mysql
-    environment:
+    environment: #defines environment variables set in the container
       - DB_NAME=${DB_NAME}
       - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - DB_USER_USERNAME=${DB_USER_USERNAME}
       - DB_USER_PASSWORD=${DB_USER_PASSWORD}
+  wordpress:
+    hostname: wordpress_host
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+    - inception-network
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
 volumes:
@@ -53,23 +67,10 @@ volumes:
        device: ${DATA_FOLDER}/wordpress_database
 
 
-# depends_on: #expresses startup and shutdown dependencies between services.
-    # depends_on:
-    #   - db
-    #   - redis
-
 # domainname declares a custom domain name to use for the service container.
 # MUST be a valid RFC 1123 hostname.
 
 # env_file adds environment variables to the container based on file content.
-
-#environment defines environment variables set in the container. 
-#environment can use either an array or a map. 
-# environment:
-#   - RACK_ENV=development
-#   - SHOW=true
-#   - USER_INPUT
-
 
 # hostname declares a custom host name to use for the service container. MUST be a valid RFC 1123 hostname.
 
@@ -101,7 +102,6 @@ volumes:
 #       WORDPRESS_DB_USER: wordpress
 #       WORDPRESS_DB_PASSWORD: wordpress
 #       WORDPRESS_DB_NAME: wordpress
-
 
 # # Networks :  We haven’t defined any custom network, so it should create one for you.
 # # See container_name argument for naming the container
