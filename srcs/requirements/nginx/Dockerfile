@@ -30,6 +30,9 @@ RUN     chmod 755 /var/www/html \
 # Copy conf file in the container created. it replaces the default existing nginx conf file
 COPY    ./conf/nginx.conf /etc/nginx/nginx.conf
 
+# create softlink so that nginx logs are visible in docker logs
+RUN     ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
+
 # L'instruction EXPOSE permet d'indiquer le port sur lequel votre application écoute.
 # EXPOSE ne rend pas les ports du conteneur accessibles à l'hôte, il expose le port spécifié et le rend disponible uniquement pour la communication entre conteneurs
 # Note : Pour que le serveur WordPress puisse communiquer avec le conteneur MariaDB, il est important que les deux conteneurs soient exécutés dans le même réseau docker.
