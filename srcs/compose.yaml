@@ -5,15 +5,16 @@ version: '3.7'
 # L'ensemble des conteneurs qui doivent être créés doivent être définis sous l'argument services
 services:
   nginx: # projet name 
-    hostname: nginx_host
-    container_name: nginx #is a string that specifies a custom container name, rather than a generated default name.
     # creation d'une dependance entre 2 conteneurs ==> Docker va demarrer le service db AVANT le service wordpress
     depends_on:
       - mariadb
+    hostname: nginx
+    image: nginx:nginx
+    container_name: nginx #is a string that specifies a custom container name, rather than a generated default name.
     build: # specifies the build configuration for creating container image from source
       context: ./requirements/nginx
       dockerfile: Dockerfile
-    restart: always
+    restart: on-failure
     networks:
     - inception-network
     ports: # Exposes container ports
@@ -21,35 +22,42 @@ services:
     # volumes : permet de stocker l'ensemble du contenu du dossier /var/lib/mysql dans un disque persistant. Et donc, de pouvoir garder les données en local sur notre host.
     volumes: # On place le chemin local à gauche du séparateur : et le chemin dans le conteneur à droite local:conteneur
       - wordpress_files:/var/www/html
+    env_file: .env
   mariadb:
-    hostname: mariadb_host
+    hostname: mariadb
+    image: mariadb:mariadb
     container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    restart: always
+    restart: on-failure
     networks:
       - inception-network
-    ports:
-      - "3306:3306"
-    volumes: #/var/lib/mysql configuré dans conf file
+    # ports:
+    #   - "3306:3306"
+    volumes: #/var/lib/mysql configuré dans mariadb conf file
       - wordpress_database:/var/lib/mysql
     environment: #defines environment variables set in the container
       - DB_NAME=${DB_NAME}
       - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - DB_USER_USERNAME=${DB_USER_USERNAME}
       - DB_USER_PASSWORD=${DB_USER_PASSWORD}
+      - DB_HOST=${DB_HOST}
   wordpress:
-    hostname: wordpress_host
-    container_name: wordpress
     depends_on:
       - mariadb
+    hostname: wordpress
+    image: wordpress:wordpress
+    container_name: wordpress
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
-    restart: always
+    volumes:
+       - wordpress_files:/var/www/html
+    restart: on-failure
     networks:
-    - inception-network
+      - inception-network
+    env_file: .env
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
 volumes:
