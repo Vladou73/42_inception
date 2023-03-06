@@ -6,11 +6,15 @@ all:
 	docker compose -f ./srcs/compose.yaml up -d
 	docker compose -f ./srcs/compose.yaml ps
 
+up:
+	docker compose -f ./srcs/compose.yaml up -d
+	docker compose -f ./srcs/compose.yaml ps
+
 re: fclean all
 
 #stops and removes containers, networks, volumes and images created by up
 down:
-	docker compose -f ./srcs/docker-compose.yml down
+	docker compose -f ./srcs/compose.yaml down
 
 stop_all:
 	-docker stop `docker ps -aq`
