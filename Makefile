@@ -1,8 +1,8 @@
 include ./srcs/.env
 
 all:
-	mkdir -p ${DATA_FOLDER}/wordpress_files
-	mkdir -p ${DATA_FOLDER}/wordpress_database
+	sudo mkdir -p ${DATA_FOLDER}/wordpress_files
+	sudo mkdir -p ${DATA_FOLDER}/wordpress_database
 	docker compose -f ./srcs/compose.yaml up -d
 	docker compose -f ./srcs/compose.yaml ps
 
@@ -26,4 +26,4 @@ vclean:
 
 fclean: stop_all cclean iclean vclean 
 	docker system prune -af --volumes
-	rm -rf ${DATA_FOLDER}
+	sudo rm -rf ${DATA_FOLDER}

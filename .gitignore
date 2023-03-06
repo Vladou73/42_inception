@@ -1,3 +1,6 @@
 srcs/.env
 /srcs/.env
 ./srcs/.env
+hosts
+/hosts
+./hosts
