@@ -8,14 +8,15 @@ set -x #Turns on debugging for the current shell session : interprétation dans 
 
 # cat /etc/hosts
 
-##################### DEMARRAGE #####################
-# démarrage du service mariaDB
-# /etc/init.d/mysql start
-service mysql start
-
 if [ ! -d "/var/lib/mysql/${DB_NAME}" ]
 then
     echo "create database and users"
+
+    ##################### DEMARRAGE #####################
+    # démarrage du service mariaDB
+    # /etc/init.d/mysql start
+    service mysql start
+
     ##################### CREATION USER, DATABASE  #####################
     # -e : Execute statement and quit.
     mysql -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME};"
