@@ -15,5 +15,3 @@ RUN     chmod -R 755 /etc/mysql/database.sh
 EXPOSE  3306
 
 CMD     [ "/bin/bash", "/etc/mysql/database.sh" ]
-# CMD     [ "/etc/init.d/mysql" ,"start" ]
-# CMD ["mysqld" "--print-defaults"]

@@ -8,6 +8,7 @@ services:
     # creation d'une dependance entre 2 conteneurs ==> Docker va demarrer le service db AVANT le service wordpress
     depends_on:
       - mariadb
+    # hostname declares a custom host name to use for the service container. MUST be a valid RFC 1123 hostname.
     hostname: nginx
     image: nginx:nginx
     container_name: nginx #is a string that specifies a custom container name, rather than a generated default name.
@@ -33,8 +34,6 @@ services:
     restart: on-failure
     networks:
       - inception-network
-    # ports:
-    #   - "3306:3306"
     volumes: #/var/lib/mysql configuré dans mariadb conf file
       - wordpress_database:/var/lib/mysql
     environment: #defines environment variables set in the container
@@ -57,6 +56,7 @@ services:
     restart: on-failure
     networks:
       - inception-network
+    # env_file adds environment variables to the container based on file content.
     env_file: .env
 
 # volumes defines mount host paths or named volumes that MUST be accessible by service containers.
@@ -75,47 +75,6 @@ volumes:
        device: ${DATA_FOLDER}/wordpress_database
 
 
-# domainname declares a custom domain name to use for the service container.
-# MUST be a valid RFC 1123 hostname.
-
-# env_file adds environment variables to the container based on file content.
-
-# hostname declares a custom host name to use for the service container. MUST be a valid RFC 1123 hostname.
-
-#     # image :  définir l'image Docker que nous souhaitons utiliser.
-#     # equivalent a "build en lui spécifiant le chemin vers notre fichier Dockerfile" ; ainsi, lors de l’exécution de Docker Compose, il aurait construit le conteneur via le Dockerfile avant de l’exécuter.
-#     image: mysql:5.7
-#     # Un conteneur étant par définition monoprocessus, s'il rencontre une erreur fatale, il peut être amené à s'arrêter. Si le serveur MySQL s'arrête il redémarrera automatiquement avec l'argument "restart: always"
-#     restart: always
-#     # Définissez les variables d'environnement
-#     environment:
-#       MYSQL_ROOT_PASSWORD: somewordpress
-#       MYSQL_DATABASE: wordpress
-#       MYSQL_USER: wordpress
-#       MYSQL_PASSWORD: wordpress
-
-#   # Dans le second service, nous créons un conteneur qui contiendra le nécessaire pour faire fonctionner votre site avec WordPress
-#   wordpress:
-#     # creation d'une dependance entre 2 conteneurs ==> Docker va demarrer le service db AVANT le service wordpress
-#     depends_on:
-#       - db
-#     image: wordpress
-#     # ports : indique a Docker Compose qu on veut exposer un port de notre machine hote vers notre conteneur
-#     # et ainsi le rendre accessible depuis l'exterieur
-#     ports:
-#       - "8000:80"
-#     restart: always
-#     environment:
-#       WORDPRESS_DB_HOST: db:3306
-#       WORDPRESS_DB_USER: wordpress
-#       WORDPRESS_DB_PASSWORD: wordpress
-#       WORDPRESS_DB_NAME: wordpress
-
-# # Networks :  We haven’t defined any custom network, so it should create one for you.
-# # See container_name argument for naming the container
-
 # networks defines the networks that service containers are attached to, referencing entries under the top-level networks key.
 networks:
   inception-network:
-
-  
