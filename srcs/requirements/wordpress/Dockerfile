@@ -9,13 +9,8 @@ RUN     apt update -yq \
 # -p is short for --parents - it creates the entire directory tree up to the given directory.
 RUN     mkdir -p /run/php
 
-#download wordpress with wget and unzip it in /var/www ==> plutôt l'installer via la CLI ?
 #wget is a Linux based free and open source utility used for retrieving contents from Web Server
 RUN     apt install wget -y && apt-get clean -y
-#         && wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www \
-#         && cd /var/www \
-#         && tar -xzf wordpress-6.0-fr_FR.tar.gz \
-#         && rm wordpress-6.0-fr_FR.tar.gz
 
 #download wordpress CLI to allow configuring wordpress in bash script
 RUN     wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
