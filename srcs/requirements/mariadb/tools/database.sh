@@ -1,5 +1,5 @@
 ##################### DEBUG / LOGS #####################
-set -x #Turns on debugging for the current shell session : interprétation dans le terminal de toutes les commandes, boucles, variables
+# set -x #Turns on debugging for the current shell session : interprétation dans le terminal de toutes les commandes, boucles, variables
 # mysql -u root -e "status";
 # mysql -u root -e "SELECT host, user, password FROM mysql.user;"
 # mysql -u root -e "SHOW DATABASES;"

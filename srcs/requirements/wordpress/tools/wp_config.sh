@@ -1,6 +1,6 @@
-set -x #debug mode
+#set -x #debug mode
 
-cat /etc/hosts
+#cat /etc/hosts
 
 echo "---------- wait for MariaDB container script to be executed -----------"
 sleep 15
