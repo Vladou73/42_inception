@@ -31,6 +31,13 @@ wp core install     --path="/var/www/html" \
                     --locale=fr_FR \
                     --allow-root
                     
+#Create another wp user - In your wp database there must be 2 users
+wp user create $DB_USER_USERNAME $DB_USER_EMAIL \
+                                --user_pass=$DB_USER_PASSWORD \
+                                --role=editor \
+                                --path="/var/www/html" \
+                                --allow-root
+
 #Install and use a theme
 wp theme install twentytwentyone --allow-root --activate #--force
 # wp theme activate twentytwentyone --allow-root 
